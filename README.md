@@ -22,4 +22,19 @@ design_mat = f["design_matrix"].get("fip_16_day_9")[:]
 
 # get fluo data for a particular day, for a particular animal
 fluo = ["fluo_data_nac_dms_dls"].get("fip_16_day_9")[:]
+
+# if reading data with h5py.File remember to close it, as others wont be able to access an open database
+f.close()
+
+# an alternative is to use with:
+with h5py.File(dblock, "r") as f:
+    design_mat = f["design_matrix"].get("fip_16_day_9")[:]
+    
+# automate with a function
+def read_data(db_location, group_name, fip_number, day_number):
+    get_str = "fip_" + str(fip_number) "_" + str(day_number)
+    with h5py.File(db_location) as f:
+        data = f[group_name].get(get_str)[:]
+    return data
+   
 ```
