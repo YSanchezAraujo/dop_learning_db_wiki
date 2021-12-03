@@ -57,4 +57,13 @@ close(f)
 
 # as with python this bypasses the need to manually open and close
 fluo = h5read(dblock, "fluo_data_nac_dms_dls/fip_13_day_1")
+
+# to make it consistent with python
+function read_data(db_location, group_name, fip_number, day_number)
+    get_str = string("fip_", fip_number, "_day_", day_number)
+    get_str = string(group_name, "/", get_str)
+    return h5read(db_location, get_str)
+end
+
+fluo = read_data(dblock, "fluo_data_nac_dms_dls", 13, 1)
 ```
