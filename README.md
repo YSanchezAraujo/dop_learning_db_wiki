@@ -56,5 +56,5 @@ fluo = read(fluo_group["fip_13_day_1"])
 close(f)
 
 # as with python this bypasses the need to manually open and close
-fluo = h5read("fip_db.hdf5", "fluo_data_nac_dms_dls/fip_13_day_1")
+fluo = h5read(dblock, "fluo_data_nac_dms_dls/fip_13_day_1")
 ```
