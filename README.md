@@ -36,8 +36,9 @@ def read_data(db_location, group_name, fip_number, day_number):
      with h5py.File(db_location, "r") as f:
          data = f[group_name].get(get_str)[:]
      return data
+     
 # example
 design_mat = read_data(dblock, "design_matrix", 13, 1)
-
+fluo = read_data(dblock, "fluo_data_nac_dms_dls", 13, 1)
    
 ```
