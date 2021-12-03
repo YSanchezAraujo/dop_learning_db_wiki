@@ -4,7 +4,7 @@
 | ------ | ----------- | ----- |
 | col_names |	single array of strings , column names of the design matrix |	"names" |
 | design_matrix |	datasets of design matrices for all animals. One dataset per sessions, per animal |	"fip\_#\_day\_#" |
-| fluo_data_nac_dms_dls | datasets of fluo data size: (fluo_samples_in_session,  3). One dataset per session, per animal |	"fip_#_day_#" |
+| fluo_data_nac_dms_dls | datasets of fluo data size: (fluo_samples_in_session,  3). One dataset per session, per animal |	"fip\_#\_day\_#" |
 
 
 ```python
