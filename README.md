@@ -15,7 +15,7 @@ dblock = "/mnt/cup/labs/witten/yoel/julia/fip_db.hdf5"
 f = h5py.File(dblock, "r")
 
 # get the keys of the dataset groups
-f.keys() # these will be things like "design_matrix" below
+f.keys() # these will be things like "design_matrix" below, these will the Groups in the table above
 
 # get design matrix for a particular day, for a particular animal
 design_mat = f["design_matrix"].get("fip_16_day_9")[:]
@@ -41,4 +41,15 @@ def read_data(db_location, group_name, fip_number, day_number):
 design_mat = read_data(dblock, "design_matrix", 13, 1)
 fluo = read_data(dblock, "fluo_data_nac_dms_dls", 13, 1)
    
+```
+
+
+
+```julia
+using HDF5
+dblock = "/mnt/cup/labs/witten/yoel/julia/fip_db.hdf5"
+f = h5open(dblock, "r")
+fluo_group = f["fluo_data_nac_dms_dls"]
+fluo = read(fluo_group["fip_13_day_1"])
+close(f)
 ```
