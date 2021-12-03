@@ -32,9 +32,12 @@ with h5py.File(dblock, "r") as f:
     
 # automate with a function
 def read_data(db_location, group_name, fip_number, day_number):
-    get_str = "fip_" + str(fip_number) "_" + str(day_number)
-    with h5py.File(db_location) as f:
-        data = f[group_name].get(get_str)[:]
-    return data
+     get_str = "fip_" + str(fip_number) + "_day_" + str(day_number)
+     with h5py.File(db_location, "r") as f:
+         data = f[group_name].get(get_str)[:]
+     return data
+# example
+design_mat = read_data(dblock, "design_matrix", 13, 1)
+
    
 ```
