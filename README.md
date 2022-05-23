@@ -60,3 +60,9 @@ group = "wheel"
 date = "2022-04-22"
 wheel_data = read_db(dblock, animal, group, date)
 ```
+
+
+## Matlab example
+```matlab
+wheel_data = h5read('\loc\to\db.hdf5','/29/wheel/2022-04-22')
+```
