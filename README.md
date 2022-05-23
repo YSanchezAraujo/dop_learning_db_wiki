@@ -29,7 +29,6 @@
 import h5py
 dblock = "\loc\to\db.hdf5"
 
-    
 # automate with a function
 def read_data(db_loc, fip, grp, date):
      get_str = str(fip) + "/" + grp + "/" + date
@@ -42,7 +41,6 @@ animal = 29
 group = "wheel"
 date = "2022-04-22"
 wheel_data = read_db(dblock, animal, group, date)
-   
 ```
 
 ## Julia example
