@@ -47,7 +47,7 @@ wheel_data = read_db(dblock, animal, group, date)
 
 ```julia
 using HDF5
-dblock = "/mnt/cup/labs/witten/yoel/julia/fip_db.hdf5"
+dblock = "\loc\to\db.hdf5"
 
 # to make it consistent with python
 function read_db(db_loc, fip, grp, date)
