@@ -3,7 +3,7 @@
 | Groups | Description | Acces |
 | ------ | ----------- | ----- |
 | feature_map |	array of 0 and 1's denoting if a feature is present, zeros are only ever possible for feedback |"<fip_number>\feature_map\year-month-day" |
-| psych_propc |	(8 by 3) matrix contain contrast, propertion correct and errors bar info |	"<fip_number>\psych_proc\year-month-day" |
+| psych_propc |	(8 by 3) matrix contain contrast, proportion correct, and errors bar info |	"<fip_number>\psych_proc\year-month-day" |
 | idx_stim_right | matrix containing indices for when the contrast appeared in terms of fluorsence rows|"<fip_number>\idx_stim_right\year-month-day" |
 | idx_stim_left | same as above, but with info for this group (i.e. stim_left) | "<fip_number>\idx_stim_left\year-month-day" | 
 | idx_act_right | same as above, but with info for this group | "<fip_number>\idx_act_right\year-month-day" | 
