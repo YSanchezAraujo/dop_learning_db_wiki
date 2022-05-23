@@ -29,9 +29,6 @@
 import h5py
 dblock = "\loc\to\db.hdf5"
 
-# an alternative is to use with:
-with h5py.File(dblock, "r") as f:
-    design_mat = f["design_matrix"].get("fip_16_day_9")[:]
     
 # automate with a function
 def read_data(db_loc, fip, grp, date):
