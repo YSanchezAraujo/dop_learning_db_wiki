@@ -2,46 +2,49 @@
 
 | Groups | Description | Acces |
 | ------ | ----------- | ----- |
-| col_names |	single array of strings , column names of the design matrix |	"names" |
-| design_matrix |	datasets of design matrices for all animals. One dataset per sessions, per animal |	"fip\_#\_day\_#" |
-| fluo_data_nac_dms_dls | datasets of fluo data size: (fluo_samples_in_session,  3). One dataset per session, per animal |	"fip\_#\_day\_#" |
-| idx_stim_act | indices to index fluo_data_nac_dms_dls, columns correspond to events during task, values of 1 should be ignored| "fip\_#\_day\_#" | 
-| idx_feed | indices to index fluo_data_nac_dms_dls, columns correspond to events during task, values of 1 should be ignored| "fip\_#\_day\_#" | 
+| feature_map |	array of 0 and 1's denoting if a feature is present, zeros are only ever possible for feedback |"<fip_number>\feature_map\year-month-day" |
+| psych_propc |	(8 by 3) matrix contain contrast, propertion correct and errors bar info |	"<fip_number>\psych_proc\year-month-day" |
+| idx_stim_right | matrix containing indices for when the contrast appeared in terms of fluorsence rows|"<fip_number>\idx_stim_right\year-month-day" |
+| idx_stim_left | same as above, but with info for this group (i.e. stim_left) | "<fip_number>\idx_stim_left\year-month-day" | 
+| idx_act_right | same as above, but with info for this group | "<fip_number>\idx_act_right\year-month-day" | 
+| idx_act_left | same as above, but with info for this group | "<fip_number>\idx_act_left\year-month-day" |
+| idx_feed_right_correct |same as above, but with info for this group | "<fip_number>\idx_feed_right_correct\year-month-day" |
+| idx_feed_left_correct |same as above, but with info for this group | "<fip_number>\idx_feed_right_correct\year-month-day" |
+| idx_feed_right_incorrect |same as above, but with info for this group | "<fip_number>\idx_feed_right_incorrect\year-month-day" |
+| idx_feed_left_incorrect |same as above, but with info for this group | "<fip_number>\idx_feed_left_incorrect\year-month-day" |
+| X_stim_right | design matrix columns for group | "<fip_number>\X_stim_right\year-month-day" |
+| X_stim_left | design matrix columns for group | "<fip_number>\X_stim_left\year-month-day" |
+| X_act_right | design matrix columns for group | "<fip_number>\X_act_right\year-month-day" |
+| X_act_left | design matrix columns for group | "<fip_number>\X_act_left\year-month-day" |
+| X_feed_right_correct | design matrix columns for group | "<fip_number>\X_feed_right_correct\year-month-day" |
+| X_feed_left_correct | design matrix columns for group | "<fip_number>\X_feed_left_correct\year-month-day" |
+| X_feed_right_incorrect | design matrix columns for group | "<fip_number>\X_feed_right_incorrect\year-month-day" |
+| X_feed_left_incorrect | design matrix columns for group | "<fip_number>\X_feed_left_incorrect\year-month-day" |
+| wheel | matrix contain: times, wheel position (uncentered), stim position (centered), wheel velocity, wheel acceleration |
+| task_features | matrix of rewards, choices, contrast shown on trial, ... | "<fip_number>\task_features\year-month-day" |
+| task_times | matrix of times for task_features | "<fip_number>\task_times\year-month-day" |
 
 ## Python example
 ```python
 import h5py
-dblock = "/mnt/cup/labs/witten/yoel/julia/fip_db.hdf5"
-
-# read in the database
-f = h5py.File(dblock, "r")
-
-# get the keys of the dataset groups
-f.keys() # these will be things like "design_matrix" below, these will the Groups in the table above
-
-# get design matrix for a particular day, for a particular animal
-design_mat = f["design_matrix"].get("fip_16_day_9")[:]
-
-# get fluo data for a particular day, for a particular animal
-fluo = ["fluo_data_nac_dms_dls"].get("fip_16_day_9")[:]
-
-# if reading data with h5py.File remember to close it, as others wont be able to access an open database
-f.close()
+dblock = "\loc\to\db.hdf5"
 
 # an alternative is to use with:
 with h5py.File(dblock, "r") as f:
     design_mat = f["design_matrix"].get("fip_16_day_9")[:]
     
 # automate with a function
-def read_data(db_location, group_name, fip_number, day_number):
-     get_str = "fip_" + str(fip_number) + "_day_" + str(day_number)
+def read_data(db_loc, fip, grp, date):
+     get_str = str(fip) + "/" + grp + "/" + date
      with h5py.File(db_location, "r") as f:
-         data = f[group_name].get(get_str)[:]
+         data = f[get_str][:]
      return data
      
 # example
-design_mat = read_data(dblock, "design_matrix", 13, 1)
-fluo = read_data(dblock, "fluo_data_nac_dms_dls", 13, 1)
+animal = 29
+group = "wheel"
+date = "2022-04-22"
+wheel_data = read_db(dblock, animal, group, date)
    
 ```
 
@@ -51,21 +54,14 @@ fluo = read_data(dblock, "fluo_data_nac_dms_dls", 13, 1)
 using HDF5
 dblock = "/mnt/cup/labs/witten/yoel/julia/fip_db.hdf5"
 
-# manually opening and closing
-f = h5open(dblock, "r")
-fluo_group = f["fluo_data_nac_dms_dls"]
-fluo = read(fluo_group["fip_13_day_1"])
-close(f)
-
-# as with python this bypasses the need to manually open and close
-fluo = h5read(dblock, "fluo_data_nac_dms_dls/fip_13_day_1")
-
 # to make it consistent with python
-function read_data(db_location, group_name, fip_number, day_number)
-    get_str = string("fip_", fip_number, "_day_", day_number)
-    get_str = string(group_name, "/", get_str)
-    return h5read(db_location, get_str)
+function read_db(db_loc, fip, grp, date)
+    get_str = string(fip, "/", grp, "/", date)
+    return h5read(db_loc, get_str)
 end
 
-fluo = read_data(dblock, "fluo_data_nac_dms_dls", 13, 1)
+animal = 29
+group = "wheel"
+date = "2022-04-22"
+wheel_data = read_db(dblock, animal, group, date)
 ```
